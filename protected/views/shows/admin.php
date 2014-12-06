@@ -48,12 +48,42 @@ $('.search-form form').submit(function(){
 		'end_date',
 		'place',
 		'rate',
-		/*
-		'picture',
+        array(
+            'name'=>'picture',
+            'type'=>'html',
+            'value'=>function($data, $row){
+                if($data->picture){
+                    return CHtml::image($data->picture, $data->name, array('width'=>100));
+                }else{
+                    return '无图';
+                }
+            },
+        ),
 		'rate_men',
-		'type',
+        array(
+            'name'=>'type',
+            'value'=>function($data, $row){
+                $dict = Logic::get_dict('showType', 'id', 'name');
+                return $dict[$data->type];
+            },
+            'filter' => Logic::get_dict('showType', 'id', 'name'),
+        ),
 		'price',
-		'background',
+        array(
+            'name'=>'background',
+            'type'=>'html',
+            'value'=>function($data, $row){
+                if($data->background){
+                    return CHtml::image($data->background, $data->name, array('width'=>100));
+                }else{
+                    return '无图';
+                }
+            },
+            'htmlOptions'=>array(
+                'style'=>'text-align:center',
+            ),
+        ),
+         /*
 		'guide_url',
 		'buy_url',
 		'ctime',

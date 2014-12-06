@@ -75,4 +75,16 @@ class Logic {
         }
         return $arr;
     }
+
+    static function getPicture($model, $attr){
+        $file = CUploadedFile::getInstance($model, $attr);
+        if($file){
+            $i = pathinfo($file->name);
+            $filename = $i['filename'].'_'.rand(100, 999).$i['extension'];
+            $file_path = Yii::getPathOfAlias('webroot.images.upload').'/'.$filename;
+            $file->saveAs($file_path);
+            $model->$attr = 'http://'.Yii::app()->params['host'].'/images/upload/'.$filename;
+        }
+        return $model;
+    }
 } 

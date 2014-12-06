@@ -70,10 +70,8 @@ class ShowsController extends Controller
 		if(isset($_POST['Shows']))
 		{
 			$model->attributes=$_POST['Shows'];
-            $file = CUploadedFile::getInstance($model, 'picture');
-            $file_path = Yii::getPathOfAlias('webroot.images.upload').'/'.$file->name.'_'.rand(100, 999);
-            $file->saveAs($file_path);
-            $model->picture = 'http://yyb.caoxw.com/images/upload/'.$file->name;
+            $model = Logic::getPicture($model, 'picture');
+            $model = Logic::getPicture($model, 'background');
             if($model->save())
                 $this->redirect(array('admin','id'=>$model->id));
 		}
@@ -97,8 +95,16 @@ class ShowsController extends Controller
 
 		if(isset($_POST['Shows']))
 		{
+            if(isset($_POST['Shows']['picture']) && !$_POST['Shows']['picture']){
+                unset($_POST['Shows']['picture']);
+            }
+            if(isset($_POST['Shows']['background']) && !$_POST['Shows']['background']){
+                unset($_POST['Shows']['background']);
+            }
 			$model->attributes=$_POST['Shows'];
-			if($model->save())
+            $model = Logic::getPicture($model, 'picture');
+            $model = Logic::getPicture($model, 'background');
+            if($model->save())
 				$this->redirect(array('admin','id'=>$model->id));
 		}
 
