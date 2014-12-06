@@ -33,11 +33,10 @@ class ShowController extends Controller {
     }
 
     function actionInfo($id){
-        $data = Logic::getShowData();
-        if(isset($data[$id])){
-            $one = $data[$id];
-            $one['id'] = $id;
-            echo Logic::result(0, $one);
+        $data = Shows::model()->findByPk($id);
+        if($data){
+            $d = $data->attributes;
+            echo Logic::result(0, $d);
         }else{
             echo Logic::result(1);
         }
