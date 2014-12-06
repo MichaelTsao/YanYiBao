@@ -1,3 +1,4 @@
 /protected/config/main.php
-/images/*
-/protected/runtime/*
+/images
+/protected/runtime
+/protected/runtime/application.log

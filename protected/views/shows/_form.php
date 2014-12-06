@@ -83,7 +83,8 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'picture'); ?>
         <?php echo $form->fileField($model, 'picture');?>
-		<?php echo $form->error($model,'picture'); ?>
+        <?php if($model->picture)echo "<br/>".CHtml::image($model->picture, $model->name, array('width'=>100)); ?>
+        <?php echo $form->error($model,'picture'); ?>
 	</div>
 
 	<div class="row">
@@ -107,7 +108,8 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'background'); ?>
         <?php echo $form->fileField($model, 'background');?>
-		<?php echo $form->error($model,'background'); ?>
+        <?php if($model->background)echo "<br/>".CHtml::image($model->background, $model->name, array('width'=>100)); ?>
+        <?php echo $form->error($model,'background'); ?>
 	</div>
 
 	<div class="row">
