@@ -52,7 +52,7 @@ class ShowType extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'name' => '名字',
 		);
 	}
 
