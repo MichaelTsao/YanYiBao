@@ -36,6 +36,14 @@ class ShowController extends Controller {
         $data = Shows::model()->findByPk($id);
         if($data){
             $d = $data->attributes;
+            if($data->start_date == $data->end_date){
+                $d['time'] = $data->start_date;
+            }else{
+                $d['time'] = $data->start_date.'至'.$data->end_date;
+            }
+            $t = ShowType::model()->findByPk($data->type);
+            $d['type'] = $t->name;
+
             echo Logic::result(0, $d);
         }else{
             echo Logic::result(1);
