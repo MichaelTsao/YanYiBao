@@ -9,23 +9,23 @@
 class ShowController extends Controller {
 
     function actionList(){
-        $keys = array(
-            'name',
-            'time',
-            'place',
-            'rate',
-            'picture',
-        );
-        $d = array();
-        $data = Logic::getShowData();
-        foreach($data as $id => $one){
-            foreach($keys as $key){
-                $o[$key] = $one[$key];
+        $r = array();
+        $data = Shows::model()->findAll();
+        foreach($data as $one){
+            $s = array();
+            $s['id'] = $one->id;
+            $s['name'] = $one->name;
+            if($one->start_date == $one->end_date){
+                $s['time'] = $one->start_date;
+            }else{
+                $s['time'] = $one->start_date.'至'.$one->end_date;
             }
-            $o['id'] = $id;
-            $d[] = $o;
+            $s['place'] = $one->place;
+            $s['rate'] = $one->rate;
+            $s['picture'] = $one->picture;
+            $r[] = $s;
         }
-        echo Logic::result(0, $d);
+        echo Logic::result(0, $r);
     }
 
     function actionSearch($words){
