@@ -10,7 +10,9 @@ class ShowController extends Controller {
 
     function actionList(){
         $r = array();
-        $data = Shows::model()->findAll();
+        $criteria = new CDbCriteria();
+        $criteria->order = 'start_date';
+        $data = Shows::model()->findAll($criteria);
         foreach($data as $one){
             $s = array();
             $s['id'] = $one->id;
