@@ -13,6 +13,7 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
+    'htmlOptions' => array('enctype' => 'multipart/form-data', 'name' => 'upform',),
 )); ?>
 
 	<p class="note">标有<span class="required">*</span>为必填项.</p>
@@ -27,8 +28,9 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'portrait'); ?>
-		<?php echo $form->textField($model,'portrait',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo $form->error($model,'portrait'); ?>
+        <?php echo $form->fileField($model, 'portrait');?>
+        <?php if($model->portrait)echo "<br/>".CHtml::image($model->portrait, $model->name, array('width'=>100)); ?>
+        <?php echo $form->error($model,'portrait'); ?>
 	</div>
 
 	<div class="row buttons">

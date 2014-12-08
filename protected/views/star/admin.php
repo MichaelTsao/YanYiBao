@@ -44,9 +44,19 @@ $('.search-form form').submit(function(){
 	'columns'=>array(
 		'id',
 		'name',
-		'portrait',
-		'ctime',
-		array(
+        array(
+            'name'=>'portrait',
+            'type'=>'html',
+            'value'=>function($data, $row){
+                if($data->portrait){
+                    return CHtml::image($data->portrait, $data->name, array('width'=>100));
+                }else{
+                    return '无图';
+                }
+            },
+        ),
+
+        array(
 			'class'=>'CButtonColumn',
 		),
 	),

@@ -70,7 +70,8 @@ class StarController extends Controller
 		if(isset($_POST['Star']))
 		{
 			$model->attributes=$_POST['Star'];
-			if($model->save())
+            $model = Logic::getPicture($model, 'portrait');
+            if($model->save())
 				$this->redirect(array('admin','id'=>$model->id));
 		}
 
@@ -93,8 +94,13 @@ class StarController extends Controller
 
 		if(isset($_POST['Star']))
 		{
-			$model->attributes=$_POST['Star'];
-			if($model->save())
+            if(isset($_POST['Star']['portrait']) && !$_POST['Star']['portrait']){
+                unset($_POST['Star']['portrait']);
+            }
+
+            $model->attributes=$_POST['Star'];
+            $model = Logic::getPicture($model, 'portrait');
+            if($model->save())
 				$this->redirect(array('admin','id'=>$model->id));
 		}
 

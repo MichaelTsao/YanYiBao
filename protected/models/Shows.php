@@ -22,6 +22,7 @@
 class Shows extends CActiveRecord
 {
 	public $title = '节目';
+    public $stars = array();
 
 	/**
 	 * @return string the associated database table name
@@ -131,4 +132,11 @@ class Shows extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    public function afterFind(){
+        $data = ShowStar::model()->findAllByAttributes(array('show_id'=>$this->id));
+        foreach($data as $one){
+            $this->stars[] = $one->star_id;
+        }
+    }
 }
