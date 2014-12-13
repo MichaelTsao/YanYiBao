@@ -227,3 +227,12 @@ div.search-form
 {
 	background: #80CFFF;
 }
+
+.checkboxgroup{
+    overflow:auto;
+}
+
+.checkboxgroup div{
+    width:200px;
+    float:left;
+}

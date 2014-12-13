@@ -111,15 +111,21 @@
         <?php if($model->background)echo "<br/>".CHtml::image($model->background, $model->name, array('width'=>100)); ?>
         <?php echo $form->error($model,'background'); ?>
 	</div>
-
+    <br/>
     <div class="row">
         <?php echo $form->labelEx($model,'stars'); ?>
+        <div class="checkboxgroup">
         <?php
-        echo CHtml::checkBoxList('stars', array(), $model->stars);
+        $options = array(
+            'separator'=>'',
+            'template'=>'<div>{label}&nbsp;{input}</div>'
+        );
+        echo $form->checkBoxList($model, 'stars', Logic::get_dict('Star', 'id', 'name'), $options);
         ?>
+        </div>
         <?php echo $form->error($model,'stars'); ?>
     </div>
-
+    <br/>
 	<div class="row">
 		<?php echo $form->labelEx($model,'guide_url'); ?>
 		<?php echo $form->textField($model,'guide_url',array('size'=>60,'maxlength'=>255)); ?>

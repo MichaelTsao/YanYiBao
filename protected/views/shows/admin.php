@@ -85,11 +85,19 @@ $('.search-form form').submit(function(){
         ),
         array(
             'name'=>'stars',
-            'value'=>'html',
+            'type'=>'html',
             'value'=>function($data, $row){
-                $d = implode('|', array_values($data->stars));
+                $star_info = Logic::get_dict('Star', 'id', 'name');
+                $d = array();
+                foreach($data->stars as $id){
+                    $d[] = $star_info[$id];
+                }
+                $d = implode('<br/>', $d);
                 return $d;
             },
+            'htmlOptions'=>array(
+                'style'=>'white-space: nowrap;',
+            ),
         ),
         /*
        'guide_url',

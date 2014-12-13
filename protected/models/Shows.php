@@ -138,14 +138,13 @@ class Shows extends CActiveRecord
         $this->stars = array();
         $data = ShowStar::model()->findAllByAttributes(array('show_id'=>$this->id));
         foreach($data as $one){
-            $star = Star::model()->findByPk($one->star_id);
-            $this->stars[$one->star_id] = $star->name;
+            $this->stars[] = $one->star_id;
         }
     }
 
     public function afterSave(){
         ShowStar::model()->deleteAllByAttributes(array('show_id'=>$this->id));
-        foreach ($this->stars as $id => $name) {
+        foreach ($this->stars as $id) {
             $s = new ShowStar();
             $s->show_id = $this->id;
             $s->star_id = $id;
