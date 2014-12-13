@@ -22,7 +22,7 @@
 class Shows extends CActiveRecord
 {
 	public $title = '节目';
-    public $stars = array();
+    public $stars = '';
 
 	/**
 	 * @return string the associated database table name
@@ -43,7 +43,7 @@ class Shows extends CActiveRecord
 			array('rate, rate_men, type', 'numerical', 'integerOnly'=>true),
 			array('name, place, price', 'length', 'max'=>100),
 			array('picture, background, guide_url, buy_url', 'length', 'max'=>255),
-			array('start_date, end_date', 'safe'),
+			array('start_date, end_date, stars', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name, start_date, end_date, place, rate, picture, rate_men, type, price, background, guide_url, buy_url, ctime', 'safe', 'on'=>'search'),
@@ -81,6 +81,7 @@ class Shows extends CActiveRecord
 			'guide_url' => '引导页',
 			'buy_url' => '购买页',
 			'ctime' => '创建时间',
+            'stars'=>'明星',
 		);
 	}
 
@@ -134,9 +135,21 @@ class Shows extends CActiveRecord
 	}
 
     public function afterFind(){
+        $this->stars = array();
         $data = ShowStar::model()->findAllByAttributes(array('show_id'=>$this->id));
         foreach($data as $one){
-            $this->stars[] = $one->star_id;
+            $star = Star::model()->findByPk($one->star_id);
+            $this->stars[$one->star_id] = $star->name;
+        }
+    }
+
+    public function afterSave(){
+        ShowStar::model()->deleteAllByAttributes(array('show_id'=>$this->id));
+        foreach ($this->stars as $id => $name) {
+            $s = new ShowStar();
+            $s->show_id = $this->id;
+            $s->star_id = $id;
+            $s->save();
         }
     }
 }

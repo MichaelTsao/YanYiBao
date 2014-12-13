@@ -112,6 +112,14 @@
         <?php echo $form->error($model,'background'); ?>
 	</div>
 
+    <div class="row">
+        <?php echo $form->labelEx($model,'stars'); ?>
+        <?php
+        echo CHtml::checkBoxList('stars', array(), $model->stars);
+        ?>
+        <?php echo $form->error($model,'stars'); ?>
+    </div>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'guide_url'); ?>
 		<?php echo $form->textField($model,'guide_url',array('size'=>60,'maxlength'=>255)); ?>

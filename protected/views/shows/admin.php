@@ -83,11 +83,19 @@ $('.search-form form').submit(function(){
                 'style'=>'text-align:center',
             ),
         ),
-         /*
-		'guide_url',
-		'buy_url',
-		'ctime',
-		*/
+        array(
+            'name'=>'stars',
+            'value'=>'html',
+            'value'=>function($data, $row){
+                $d = implode('|', array_values($data->stars));
+                return $d;
+            },
+        ),
+        /*
+       'guide_url',
+       'buy_url',
+       'ctime',
+       */
 		array(
 			'class'=>'CButtonColumn',
 		),
