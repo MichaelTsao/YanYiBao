@@ -144,11 +144,13 @@ class Shows extends CActiveRecord
 
     public function afterSave(){
         ShowStar::model()->deleteAllByAttributes(array('show_id'=>$this->id));
-        foreach ($this->stars as $id) {
-            $s = new ShowStar();
-            $s->show_id = $this->id;
-            $s->star_id = $id;
-            $s->save();
+        if($this->stars){
+            foreach ($this->stars as $id) {
+                $s = new ShowStar();
+                $s->show_id = $this->id;
+                $s->star_id = $id;
+                $s->save();
+            }
         }
     }
 }

@@ -53,51 +53,85 @@ class ShowController extends Controller {
     }
 
     function actionProgram($id){
-        $data = array('http://yyb.caoxw.com/images/cover1.jpg', 'http://yyb.caoxw.com/images/cover1.jpg');
-        echo Logic::result(0, $data);
+        $r = array();
+        $data = Picture::model()->findAllByAttributes(array('type'=>2, 'owner_id'=>$id));
+        foreach ($data as $one) {
+            $r[] = $one->url;
+        }
+        echo Logic::result(0, $r);
     }
 
     function actionGallery($id){
-        $this->actionProgram($id);
+        $r = array();
+        $data = Picture::model()->findAllByAttributes(array('type'=>3, 'owner_id'=>$id));
+        foreach ($data as $one) {
+            $r[] = $one->url;
+        }
+        echo Logic::result(0, $r);
     }
 
     function actionStar($id){
         $d = array();
-        $data = Logic::getStarData();
-        foreach($data as $k => $v){
-            unset($v['pic']);
-            $d[] = $v;
+        $star_id = ShowStar::model()->findAllByAttributes(array('show_id'=>$id));
+        foreach ($star_id as $one) {
+            $info = Star::model()->findByPk($one->star_id);
+            $m = $info->attributes;
+            unset($m['ctime']);
+            $d[] = $m;
         }
         echo Logic::result(0, $d);
     }
 
     function actionStarInfo($id){
-        $data = Logic::getStarData();
-        echo Logic::result(0, $data[$id]);
+        $info = Star::model()->findByPk($id);
+        if (!$info) {
+            echo Logic::result(1);
+            return;
+        }
+        $d = $info->attributes;
+        unset($d['ctime']);
+        $d['pic'] = array();
+        $pic = Picture::model()->findAllByAttributes(array('type'=>1, 'owner_id'=>$id));
+        foreach ($pic as $one) {
+            $d['pic'][] = $one->url;
+        }
+        echo Logic::result(0, $d);
     }
 
     function actionRate($id, $value, $words){
-        echo Logic::result(0);
+        if($value < 0 || $value > 5){
+            echo Logic::result(2);
+            return;
+        }
+        $r = new Rate();
+        $r->show_id = $id;
+        $r->value = $value;
+        $r->words = $words;
+        $s = $r->save();
+        if (!$s) {
+            echo Logic::result(3);
+        }else{
+            echo Logic::result(0);
+        }
     }
 
     function actionGetRates($id){
-        $list[] = array(
-            'id'=>123,
-            'avatar'=>'http://yyb.caoxw.com/images/cover1.jpg',
-            'name'=>'过路的猫',
-            'rate'=>5,
-            'time'=>'2014-06-07 12:34',
-            'words'=>'太棒了',
-        );
-        $list[] = array(
-            'id'=>125,
-            'avatar'=>'http://yyb.caoxw.com/images/cover1.jpg',
-            'name'=>'蓝皮狗',
-            'rate'=>3,
-            'time'=>'2014-03-19 19:14',
-            'words'=>'一般般',
-        );
-        $data = array('total'=>2, 'list'=>$list);
+        $r = array();
+        $criteria = new CDbCriteria();
+        $criteria->order = 'ctime desc';
+        $data = Rate::model()->findAllByAttributes(array('show_id'=>$id));
+        $all = Rate::model()->countByAttributes(array('show_id'=>$id));
+        foreach ($data as $one) {
+            $r[] = array(
+                'id'=>$one->id,
+                'avatar'=>'http://yyb.caoxw.com/images/cover1.jpg',
+                'name'=>'游客',
+                'rate'=>$one->value,
+                'time'=>$one->ctime,
+                'words'=>$one->words,
+            );
+        }
+        $data = array('total'=>$all, 'list'=>$r);
         echo Logic::result(0, $data);
     }
 }

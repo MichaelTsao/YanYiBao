@@ -32,6 +32,9 @@
 				array('label'=>'节目', 'url'=>array('/shows/admin')),
 				array('label'=>'节目类型', 'url'=>array('/showType/admin')),
 				array('label'=>'明星', 'url'=>array('/star/admin')),
+				array('label'=>'明星照片', 'url'=>array('/starPic/admin')),
+				array('label'=>'节目单', 'url'=>array('/programPic/admin')),
+				array('label'=>'剧照', 'url'=>array('/galleryPic/admin')),
 				array('label'=>'登录', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'登出 ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
